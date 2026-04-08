@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-left">
+        <a href="/home">&larr; BACK HOME</a>
+        <a href="/wardrobe">WARDROBE</a>
+    </div>
+    
+    <div class="logo"><a href="/" style="text-decoration:none; color:inherit;">WEARWISE</a></div>
+    
+    <div class="nav-right">
+        <a href="/saved">SAVED</a>
+        <a href="/logout" class="nav-btn">LOGOUT</a>
+    </div>
+</nav>
+
+
+<div class="container" style="max-width: 900px;">
+    <!-- WEATHER BAR -->
+    <div class="glass-panel" style="display:flex; justify-content:space-around; margin-bottom:40px; padding:20px; text-align:center;">
+        <div>
+            <p style="color:var(--text-muted); font-size:14px;">Location</p>
+            <h3 style="margin-top:5px;">{{ city }}</h3>
+        </div>
+        <div>
+            <p style="color:var(--text-muted); font-size:14px;">Temperature</p>
+            <h3 style="margin-top:5px;">{{ temp }}°C</h3>
+        </div>
+        <div>
+            <p style="color:var(--text-muted); font-size:14px;">Condition</p>
+            <h3 style="margin-top:5px;">{{ weather }}</h3>
+        </div>
+    </div>
+
+    <h2 style="text-align:center; margin-bottom:30px; font-size: 32px;">Your Perfect Match</h2>
+
+    <div style="display:flex; flex-wrap:wrap; gap:40px; align-items:flex-start;">
+        <!-- IMAGE -->
+        <div style="flex:1; min-width:300px;">
+            <img src="{{ image_url }}" style="width:100%; border-radius:15px; box-shadow:var(--card-shadow);" alt="Outfit Match">
+        </div>
+
+        <!-- TEXT -->
+        <div style="flex:1; min-width:300px;">
+            <div class="glass-panel" style="padding:30px; margin-bottom:30px;">
+                <h3 style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">Outfit Details</h3>
+                {% for key, value in outfit.items() %}
+                    <div style="margin-bottom:12px;">
+                        <span style="font-weight:600; color:var(--text-muted); font-size:14px; text-transform:uppercase;">{{ key }}</span>
+                        <p style="font-size:16px;">{{ value }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <h3 style="margin-bottom:20px;">Shop This Look</h3>
+            {% for item in items %}
+            <div style="margin-bottom:25px; padding-bottom:15px; border-bottom:1px dashed #e2e8f0;">
+                <p style="font-weight:600; font-size:15px; margin-bottom:10px;">{{ item.name }}</p>
+                <div class="shop-buttons">
+                    <a href="{{ item.links.amazon }}" class="shop-btn amazon-btn" target="_blank">Amazon</a>
+                    <a href="{{ item.links.flipkart }}" class="shop-btn flipkart-btn" target="_blank">Flipkart</a>
+                    <a href="{{ item.links.myntra }}" class="shop-btn myntra-btn" target="_blank">Myntra</a>
+                    <a href="{{ item.links.ajio }}" class="shop-btn ajio-btn" target="_blank">AJIO</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

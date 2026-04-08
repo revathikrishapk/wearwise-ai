@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearWise | Saved Outfits</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .outfits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .outfit-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .outfit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
+        }
+
+        .outfit-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.03);
+            padding: 10px;
+        }
+
+        .outfit-card p {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-left">
+        <a href="/home">&larr; BACK HOME</a>
+        <a href="/wardrobe">WARDROBE</a>
+    </div>
+    
+    <div class="logo"><a href="/" style="text-decoration:none; color:inherit;">WEARWISE</a></div>
+    
+    <div class="nav-right">
+        <a href="/saved">SAVED</a>
+        <a href="/logout" class="nav-btn">LOGOUT</a>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 1200px;">
+
+    <h2 style="text-align:center; margin-bottom:40px;">
+        Saved Outfits
+    </h2>
+
+    <div class="outfits">
+
+        {% for outfit in outfits %}
+
+        <div class="outfit-card">
+            <img src="{{ outfit.outfit_image }}" alt="Outfit">
+            <p>{{ outfit.recommendation }}</p>
+        </div>
+
+        {% else %}
+
+        <div style="grid-column:1/-1; text-align:center;">
+            <p>No saved outfits yet</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

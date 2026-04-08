@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Users</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#667eea;
+}
+
+.container{
+width:800px;
+margin:80px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#667eea;
+color:white;
+}
+
+a{
+padding:6px 12px;
+background:red;
+color:white;
+text-decoration:none;
+border-radius:5px;
+}
+
+.back{
+background:#667eea;
+margin-top:20px;
+display:inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Registered Users</h2>
+
+<table>
+
+<tr>
+<th>User ID</th>
+<th>Username</th>
+<th>Action</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+<td>{{ user.user_id }}</td>
+<td>{{ user.username }}</td>
+
+<td>
+<a href="/admin/delete_user/{{ user.user_id }}">Delete</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a class="back" href="/admin/dashboard">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

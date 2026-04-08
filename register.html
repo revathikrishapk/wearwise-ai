@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearWise | Register</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: #ebe5dd !important;
+        }
+
+        .toast {
+            background: #ef4444;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+    <style>
+        .toast {
+            background: #ef4444;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="/">HOME</a>
+            <a href="/wardrobe">WARDROBE</a>
+        </div>
+
+        <div class="logo"><a href="/" style="text-decoration:none; color:inherit;">WEARWISE</a></div>
+
+        <div class="nav-right">
+            <a href="/login" class="nav-btn">LOGIN</a>
+        </div>
+    </nav>
+
+
+    <div class="container" style="max-width: 450px; margin-top: 60px;">
+        <div class="card glass-panel" style="animation: slideUp 0.6s ease-out both; background: white;">
+            <h2 style="text-align: center; margin-bottom: 30px; font-size: 28px; color: black;">Create Account</h2>
+
+            <div id="toast-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="toast {{ category }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            <form method="POST">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="Choose a username">
+
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Choose a secure password">
+
+                <button type="submit" style="margin-top: 15px;">Register <span
+                        style="font-size:18px; margin-left:5px;">&rarr;</span></button>
+            </form>
+
+            <p style="margin-top: 25px; text-align: center; color: var(--text-muted);">
+                Already have an account? <a href="/login"
+                    style="color: black; text-decoration: underline; font-weight: 600;">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Auto hide toast
+        setTimeout(() => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(t => t.style.display = 'none');
+        }, 5000);
+    </script>
+</body>
+
+</html>

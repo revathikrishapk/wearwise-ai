@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearWise | AI Outfit Recommendations</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: #ebe5dd !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease-out;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 20px 0;
+            background: #ebe5dd;
+        }
+
+        .carousel-track {
+            display: inline-flex;
+            width: max-content;
+            animation: scrollSlide 40s linear infinite;
+        }
+
+        .carousel-track img {
+            height: 500px;
+            width: auto;
+            margin: 0 40px;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+
+        @keyframes scrollSlide {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Showcase Features Section (Section-By-Section) */
+        .showcase {
+            background: white;
+            padding: 100px 5%;
+            overflow: hidden;
+        }
+
+        .showcase-header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .showcase-header h2 {
+            font-size: 50px;
+            letter-spacing: -1px;
+            color: black;
+        }
+
+        .showcase-row {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto 150px;
+        }
+
+        .showcase-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .showcase-text {
+            flex: 1;
+        }
+
+        .showcase-text h3 {
+            font-size: 40px;
+            color: black;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .showcase-text p {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .showcase-image {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            position: relative;
+            background: #f8fafc;
+        }
+
+        .showcase-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .showcase-image:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dark Footer */
+        .site-footer {
+            background: #111827;
+            color: #f3f4f6;
+            padding: 80px 5%;
+        }
+
+        .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .footer-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .footer-info h2 {
+            font-size: 32px;
+            margin: 0 0 15px;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .footer-info p {
+            color: #9ca3af;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: white;
+            border-radius: 30px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .contact-email:hover {
+            background: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+        .feedback-form {
+            flex: 1;
+            min-width: 350px;
+            background: #1f2937;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .feedback-form h3 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            height: 120px;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 15px;
+            color: white;
+            font-size: 14px;
+            resize: none;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+        }
+
+        .submit-btn {
+            background: white;
+            color: #111827;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .showcase-row,
+            .showcase-row.reverse {
+                flex-direction: column;
+                gap: 40px;
+                margin-bottom: 100px;
+            }
+
+            .showcase-text h3 {
+                font-size: 32px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav style="position: relative; z-index: 30;">
+        <div class="nav-left">
+            <a href="/">HOME</a>
+            <a href="/wardrobe">WARDROBE</a>
+        </div>
+
+        <div class="logo"><a href="/" style="text-decoration:none; color:inherit;">WEARWISE</a></div>
+
+        <div class="nav-right">
+            <a href="/saved">SAVED</a>
+            <a href="/login" class="nav-btn">SIGN IN/UP</a>
+        </div>
+    </nav>
+
+    <!-- Top Notifications -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div style="background: #10b981; color: white; text-align: center; padding: 15px; font-weight: 500; font-size: 14px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;"
+        class="toast">
+        {{ message }}
+        <span style="float: right; margin-right: 20px; cursor: pointer;"
+            onclick="this.parentElement.style.display='none'">✕</span>
+    </div>
+    {% endfor %}
+    <script>setTimeout(() => { document.querySelectorAll('.toast').forEach(e => e.style.display = 'none') }, 4000);</script>
+    {% endif %}
+    {% endwith %}
+
+    <div class="hero">
+        <h1>Find Your Perfect<br>Weather Match</h1>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel-track">
+            <!-- First Set -->
+            <img src="/static/hero1.jpg" alt="Model 1">
+            <img src="/static/hero2.jpg" alt="Model 2">
+            <img src="/static/hero3.jpg" alt="Model 3">
+            <!-- Duplicate Set for infinite seamless loop -->
+            <img src="/static/hero1.jpg" alt="Model 1">
+            <img src="/static/hero2.jpg" alt="Model 2">
+            <img src="/static/hero3.jpg" alt="Model 3">
+        </div>
+    </div>
+
+    <!-- Scrolling Showcase Section -->
+    <div class="showcase" id="features">
+        <div class="showcase-header reveal">
+            <h2>The Future of Fashion Insight</h2>
+            <p style="color: var(--text-muted); font-size: 20px; margin-top: 15px;">Smart styling powered by Hyperlocal
+                AI context.</p>
+        </div>
+
+        <!-- Row 1: Hero Model Intro -->
+        <div class="showcase-row reveal">
+            <div class="showcase-text">
+                <h3>AI Style Engine</h3>
+                <p>Wearwise acts as your personal digital stylist. It intelligently reads patterns to cross-reference
+                    multiple data points resulting in a visually stunning outfit suggestion that you can immediately
+                    wear or shop. No more fashion paralysis.</p>
+            </div>
+            <div class="showcase-image" style="background:#ebe5dd;">
+                <img src="/static/hero_model.png" alt="AI Engine Core" style="mix-blend-mode:multiply;">
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="showcase-row reverse reveal">
+            <div class="showcase-text">
+                <h3>Weather Matching</h3>
+                <p>Never walk out the door unprepared. We dynamically generate styling suggestions designed specifically
+                    for the temperature, humidity, and condition of your exact living coordinates.</p>
+            </div>
+            <div class="showcase-image">
+                <img src="/static/outfit1.jpg" alt="Outfit Showcase 1">
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="showcase-row reveal">
+            <div class="showcase-text">
+                <h3>Wardrobe Intelligence</h3>
+                <p>Digitize your closet footprint. The algorithm doesn't just pull random clothing; it cross-references
+                    what you already own, actively bridging your current pants or tops directly into the new outfit.</p>
+            </div>
+            <div class="showcase-image">
+                <img src="/static/outfit2.jpg" alt="Outfit Showcase 2">
+            </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="showcase-row reverse reveal">
+            <div class="showcase-text">
+                <h3>Dynamic Shopping Catalog</h3>
+                <p>If you don't own the right pieces to complete a look, WearWise immediately sources them. For every
+                    missing item, magically shop the look via targeted matching links across Amazon, Flipkart, Myntra,
+                    and AJIO.</p>
+            </div>
+            <div class="showcase-image">
+                <img src="/static/outfit3.jpg" alt="Outfit Showcase 3">
+            </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="showcase-row reveal">
+            <div class="showcase-text">
+                <h3>Unmatched Custom Styling</h3>
+                <p>Define your destination, your body measurements, and state your aesthetic. From an elegant evening
+                    gala to a casual rugged roadtrip, generate the ideal aesthetic that expresses who you are.</p>
+            </div>
+            <div class="showcase-image">
+                <img src="/static/outfit4.jpg" alt="Outfit Showcase 4">
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Footer with Email & Feedback Form -->
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-info">
+                <h2>Got Ideas? WearWise<br>Listens to You.</h2>
+                <p>We are constantly evolving our AI to make fashion smarter, cheaper, and faster. If you have any
+                    suggestions, bug reports, or partnership opportunities, let us know directly.</p>
+
+                <a href="https://mail.google.com/mail/?view=cm&to=contactwearwiseai@gmail.com" target="_blank"
+                    class="contact-email">
+                    ✉ &nbsp;→&nbsp; contactwearwiseai@gmail.com
+                </a>
+            </div>
+
+            <div class="feedback-form">
+                <h3>Submit Anonymous Feedback</h3>
+                <form action="/feedback" method="POST">
+                    <textarea name="message" required
+                        placeholder="What could we do better? Type your feedback here..."></textarea>
+                    <button type="submit" class="submit-btn">Send to Developers</button>
+                </form>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('active'); }
+                });
+            }, observerOptions);
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Occasions</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#667eea;
+}
+
+.container{
+width:600px;
+margin:50px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+td,th{
+padding:8px;
+border:1px solid #ddd;
+}
+
+button{
+padding:6px 12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Manage Occasions</h2>
+
+<form method="POST">
+
+<input type="text" name="occasion" placeholder="Add new occasion" required>
+
+<button type="submit">Add</button>
+
+</form>
+
+<br>
+
+<table>
+
+<tr>
+<th>Occasion</th>
+<th>Action</th>
+</tr>
+
+{% for oc in occasions %}
+
+<tr>
+
+<td>{{ oc.occasion_name }}</td>
+
+<td>
+
+<a href="/admin/delete_occasion/{{ oc.occasion_name }}">
+<button>Delete</button>
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/admin/dashboard">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

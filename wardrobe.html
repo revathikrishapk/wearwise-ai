@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearWise | My Wardrobe</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .wardrobe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .wardrobe-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .wardrobe-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
+        }
+
+        .wardrobe-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .wardrobe-item p {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+        
+        .wardrobe-item span {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .upload-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .upload-row select, .upload-row input {
+            margin: 0;
+            padding: 10px;
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            padding: 0;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="/home">&larr; BACK HOME</a>
+            <a href="/wardrobe">WARDROBE</a>
+        </div>
+        
+        <div class="logo"><a href="/" style="text-decoration:none; color:inherit;">WEARWISE</a></div>
+        
+        <div class="nav-right">
+            <a href="/saved">SAVED</a>
+            <a href="/logout" class="nav-btn">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1000px;">
+        <div class="card glass-panel" style="animation: slideUp 0.6s ease-out both; max-width: 600px; margin: 0 auto 50px; background: white;">
+            <h2 style="text-align: center; font-size: 26px; margin-bottom: 25px; color: black;">Upload Wardrobe Item</h2>
+            
+            <div id="toast-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="toast {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" id="wardrobeForm">
+                <div id="upload-container">
+                    <!-- Initial Row -->
+                    <div class="upload-row">
+                        <div style="flex:1;">
+                            <label style="font-size: 12px;">Type</label>
+                            <select name="outfit_type[]" required>
+                                <option value="">Select Category</option>
+                                <option>Top</option>
+                                <option>Bottom</option>
+                                <option>Footwear</option>
+                                <option>Outerwear</option>
+                                <option>Accessories</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-size: 12px;">Fabric</label>
+                            <input type="text" name="fabric[]" required placeholder="E.g. Cotton">
+                        </div>
+                        <div style="flex:1.5;">
+                            <label style="font-size: 12px;">Image</label>
+                            <input type="file" name="image[]" required style="padding: 6px; background: white; font-size: 12px;">
+                        </div>
+                        <button type="button" class="remove-btn" onclick="this.parentElement.remove()" style="margin-top:20px; display:none;">×</button>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; margin-top: 15px;">
+                    <button type="button" id="addMoreBtn" style="background: white; color: black; border: 1px solid #ccc;">Add Another Item +</button>
+                    <button type="submit">Upload All Items &rarr;</button>
+                </div>
+            </form>
+        </div>
+
+        <h2 style="text-align: center; margin-bottom: 10px; font-size: 32px; color: black;">Your Collection</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Items from your wardrobe used to generate outfits</p>
+
+        <div class="wardrobe-grid">
+            {% for item in items %}
+            <div class="wardrobe-item" style="animation: slideUp 0.6s ease-out both;">
+                <img src="{{ item.image_path }}" alt="Wardrobe Item">
+                <p><strong>{{ item.outfit_type }}</strong></p>
+                <span>{{ item.fabric }}</span>
+            </div>
+            {% endfor %}
+            {% if not items %}
+                <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 50px;">
+                    <p style="font-size: 18px;">Your wardrobe is empty. Start adding items above!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("addMoreBtn").addEventListener("click", function() {
+            const container = document.getElementById("upload-container");
+            const firstRow = container.querySelector(".upload-row");
+            const newRow = firstRow.cloneNode(true);
+            
+            // Clear inputs in cloned row
+            newRow.querySelectorAll("input").forEach(input => input.value = "");
+            newRow.querySelectorAll("select").forEach(select => select.value = "");
+            
+            // Show remove button
+            newRow.querySelector(".remove-btn").style.display = "flex";
+            
+            container.appendChild(newRow);
+        });
+
+        setTimeout(() => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(t => t.style.display = 'none');
+        }, 5000);
+    </script>
+</body>
+</html>
