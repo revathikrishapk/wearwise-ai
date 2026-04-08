@@ -1,4 +1,4 @@
-# Introduction
+# Overview
 WearWise is a Flask-based intelligent fashion web application that generates personalized outfit recommendations using AI, real-time weather data, and the user’s wardrobe. The system takes inputs such as age, gender, occasion, and location, fetches live weather conditions using the OpenWeather API, and combines this with wardrobe data to create context-aware prompts for the OpenAI model. It then produces a complete outfit suggestion (Top, Bottom, Footwear, Accessories), generates a catalog-style outfit image, and provides shopping links from platforms like Amazon, Flipkart, Myntra, and Ajio. The application includes secure user authentication with password hashing, session management, a wardrobe upload system with image storage, and an admin dashboard for analytics such as user count, outfit trends, and feedback monitoring. Built using Python (Flask), MySQL, and external APIs, WearWise demonstrates full-stack development, AI integration, and real-world problem solving in personalized fashion technology.
 
 
